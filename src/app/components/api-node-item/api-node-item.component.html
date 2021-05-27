@@ -1,0 +1,17 @@
+<div class="info" [ngClass]="{ selected: isSelected(), inPath: isInPath() }">
+  <span class="iconContainer">
+    <span class="icon" *ngIf="data.children" (click)="toggle()">
+      <fa-icon [icon]="getIcon()"></fa-icon>
+    </span>
+  </span>
+  <span class="name" (click)="setActive()">{{ name }}<span *ngIf="!data.children">:</span></span>
+  <span class="type" *ngIf="!data.children">{{ data.type }}</span>
+  <span class="description" *ngIf="data.description">{{ data.description }}</span>
+</div>
+<api-node-list
+  *ngIf="isExpanded && data.children"
+  [nodes]="data.children"
+  [parentPath]="getNodePath()"
+  [activePath]="activePath"
+  [activePathSetter]="activePathSetter"
+></api-node-list>

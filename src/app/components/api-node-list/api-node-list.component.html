@@ -1,0 +1,11 @@
+<ul>
+  <li *ngFor="let node of nodes | keyvalue">
+    <api-node
+      [name]="node.key"
+      [data]="node.value"
+      [parentPath]="parentPath"
+      [activePath]="activePath"
+      [activePathSetter]="activePathSetter"
+    ></api-node>
+  </li>
+</ul>

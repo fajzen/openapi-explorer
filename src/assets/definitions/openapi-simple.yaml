@@ -1,0 +1,71 @@
+openapi: 3.0.1
+      
+info:
+  title: "Example Profile"
+  version: "0.0.1"
+  description: "Example profile to demonstrate multiple endpoints."
+     
+servers:
+  - url: "{location}/mock-profile"
+    variables:
+      location:
+        default: http://localhost
+        description: The service location URI.
+    
+paths:
+  /random-number:
+    get:
+      summary: "Get a random number in the range 0-1"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  random: 
+                    type: number
+                
+  /random-array:
+    get:
+      summary: "Get an array of random numbers in the range 0-1"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  randomArray:
+                    type: array
+                    items:
+                      type: number
+  /random-string:
+    get:
+      summary: "Get a random string"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  randomString: 
+                    type: string
+                    
+  /random-status:
+    get:
+      summary: "Get a random status (ok, warning, error, normal)"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string

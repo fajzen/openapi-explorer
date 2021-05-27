@@ -1,0 +1,8 @@
+<layout-block label="Input file">
+  <select (change)="onChange($event)" class="form-select">
+    <option value="">-- Select definition file --</option>
+    <option *ngFor="let file of DEFINITION_FILES" [ngValue]="file">
+      {{ file }}
+    </option>
+  </select>
+</layout-block>

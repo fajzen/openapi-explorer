@@ -1,0 +1,19 @@
+<div *ngIf="hasError; else okBlock" class="alert alert-danger">Parsing of source file failed.</div>
+<ng-template #okBlock>
+  <p *ngIf="apiNodesMap && (apiNodesMap | isEmpty); else dataBlock" class="alert alert-danger">
+    There are no valid endpoints in selected definition file.
+  </p>
+</ng-template>
+
+<ng-template #dataBlock>
+  <div *ngIf="apiNodesMap">
+    <path-input [activePath]="activePath" [activePathSetter]="activePathSetter"></path-input>
+    <layout-block label="Endpoints">
+      <api-node-list
+        [nodes]="apiNodesMap"
+        [activePath]="activePath"
+        [activePathSetter]="activePathSetter"
+      ></api-node-list>
+    </layout-block>
+  </div>
+</ng-template>

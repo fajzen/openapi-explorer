@@ -1,0 +1,26 @@
+swagger: '2.0'
+info:
+  version: 'Unreleased '
+  title: 'StarLiX API'
+host: starlix.com
+basePath: /v1/
+tags:
+  - name: institutions
+    description: PIs Controller
+paths:
+  /institutions/{institutionId}:
+    get:
+      tags:
+        - institutions
+      summary: Return institution data
+      parameters:
+        - name: institutionId
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          type : integer
+          format: int64
+          minimum: 1
+      responses:
+        200:
+          description: "successful operation"

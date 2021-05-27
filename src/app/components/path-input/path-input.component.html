@@ -1,0 +1,7 @@
+<layout-block label="Path">
+  <input type="text" [(ngModel)]="value" (input)="handleChangeValue()" class="form-control" [ngClass]="{ 'is-invalid': hasError() }">
+  <div class="invalid-feedback">
+    <div *ngIf="!isValid; else notExistingBlock">Path is not valid</div>
+    <ng-template #notExistingBlock>Path doesn't exist</ng-template>
+  </div>
+</layout-block>

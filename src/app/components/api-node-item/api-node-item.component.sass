@@ -1,0 +1,46 @@
+.info
+  display: flex
+  align-items: flex-start
+  padding: 0 6px
+
+  .iconContainer
+    min-width: 12px
+
+    .icon
+      display: block
+      cursor: pointer
+
+  .name
+    cursor: pointer
+
+  .type
+    color: #084298
+
+  .description
+    display: flex
+    align-items: flex-start
+    color: #41464b
+
+    &:before
+      content: "-"
+      display: block
+      margin-right: 6px
+
+  & > * + *
+    margin-left: 6px
+
+  &.inPath
+    color: #41464b
+    background-color: #e2e3e5
+
+    .name
+      font-weight: bold
+
+  &.selected
+    color: #084298
+    background-color: #cfe2ff
+
+    .name
+      font-weight: bold
+
+

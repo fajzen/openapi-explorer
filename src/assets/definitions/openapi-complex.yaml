@@ -1,0 +1,369 @@
+openapi: 3.0.1
+
+info:
+  title: "MultiPhysicsBox"
+  version: "0.0.2.20200416"
+  description: "Application profile for \"Multi Physics Box\" (MPB)"
+     
+servers:
+  - url: "{location}"
+    variables:
+      location:
+        default: http://localhost
+        description: The service location URI.
+  
+tags:
+- name: "measurement"
+    
+paths:
+  /measurement:
+    get:
+      description: "Measured and calculated values from MultiPhysicsBox"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Measurement'
+  /resetMinMaxValues:
+    post:
+      description: "Reset values in \"minMaxValuesSinceLastReset\" section"
+      responses:
+        200:
+          description: "successful operation"
+
+components:
+  schemas:
+
+    Measurement:
+      type: object
+      required:
+        - timestamp
+      properties:
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        dateTime:
+          description: "Will be provided if a real time (e.g. from a RTC) is available on device"
+          $ref: "#/components/schemas/DateTime"
+        rawValues:
+          description: "Last measured acceleration values"
+          $ref: "#/components/schemas/RawValues"
+        timeDomainVibrationValues:
+          $ref: '#/components/schemas/TimeDomainVibrationValues'
+        minMaxValuesSinceLastReset:
+          $ref: '#/components/schemas/MinMaxValuesSinceLastReset'  
+        frequencyDomainVibrationValues:
+          $ref: '#/components/schemas/FrequencyDomainVibrationValues'
+
+    Timestamp:
+      type: integer
+      format: int64
+      description: "Relative timestamp in Milliseconds. If device is having a RTC 
+        (which is synchronized to the real world), timestamp is containing milliseconds
+        since January 1st 1970. Otherwise, it might be milliseconds since startup of device."
+      
+    DateTime:
+      type: string
+      format: date-time
+      description: "Date and time according to RFC 3339, section 5.6. Example: 2017-07-21T17:32:28Z."
+
+    RawValues:
+      type: object
+      properties:
+        accCurrent:
+          description: 'Last measured acceleration values'
+          $ref: '#/components/schemas/ThreeDValue'
+        accBlock:
+          description: 'Block of last measured acceleration values'
+          type: object
+          required:
+            - samplingRate
+            - xValues
+          properties:
+            samplingRate:
+              description: Sampling rate in Hz
+              type: number
+            x:
+              type: array
+              items:
+                $ref: "#/components/schemas/MeasValue"
+            y:
+              type: array
+              items:
+                $ref: "#/components/schemas/MeasValue"
+            z:
+              type: array
+              items:
+                $ref: "#/components/schemas/MeasValue"
+
+    TimeDomainVibrationValues:
+      type: object
+      properties:
+        mean:
+          description: 'Mean value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        rms:
+          description: 'RMS value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        severity:
+          description: 'Vibration severity'
+          $ref: '#/components/schemas/ThreeDValue'
+        variance:
+          description: 'Variance of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        skew:
+          description: 'Skewness value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        kurtosis:
+          description: 'Kurtosis value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        shapeFactor:
+          description: 'Shape factor value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        crestFactor:
+          description: 'Crest factor of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        impulseFactor:
+          description: 'Impulse factor of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        skewnessFactor:
+          description: 'Skewness factor value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        kurtosisFactor:
+          description: 'Kurtosis factor value of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        clearanceFactor:
+          description: 'Clearance factor of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+        entropy:
+          description: 'Entropie of accelerations'
+          $ref: '#/components/schemas/ThreeDValue'
+          
+    MinMaxValuesSinceLastReset:
+      type: object
+      required:
+        - timestampLastReset
+      properties:
+        timestampLastReset:
+          $ref: "#/components/schemas/Timestamp"
+        min: 
+          description: 'Minimum signed absolute value of Acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        max: 
+          description: 'Maximal signed absolute value of Acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        meanMin: 
+          description: 'Minimal mean value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        meanMax: 
+          description: 'Maximal mean value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        rmsMin:
+          description: 'Minimal RMS value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        rmsMax:
+          description: 'Maximal RMS value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        severityMin:
+          description: 'Minimal vibration severity since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        severityMax:
+          description: 'Maximal vibration severity since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        varianceMin:
+          description: 'Minimal variance of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        varianceMax:
+          description: 'Maximal variance of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        skewMin:
+          description: 'Minimal Skewness value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        skewMax:
+          description: 'Maximal Skewness value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        kurtosisMin:
+          description: 'Minimal Kurtosis value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        kurtosisMax:
+          description: 'Maximal Kurtosis value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        shapeFactorMin:
+          description: 'Minimal Shape factor value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        shapeFactorMax:
+          description: 'Maximal Shape factor value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        crestFactorMin:
+          description: 'Minimal Crest factor of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        crestFactorMax:
+          description: 'Maximal Crest factor of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        impulseFactorMin:
+          description: 'Minimal Impulse factor of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        impulseFactorMax:
+          description: 'Maximal Impulse factor of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        skewnessFactorMin:
+          description: 'Minimal Skewness factor value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        skewnessFactorMax:
+          description: 'Maximal Skewness factor value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        kurtosisFactorMin:
+          description: 'Minimal Kurtosis factor value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        kurtosisFactorMax:
+          description: 'Maximal Kurtosis factor value of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        clearanceFactorMin:
+          description: 'Minimal Clearance factor of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        clearanceFactorMax:
+          description: 'Maximal Clearance factor of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        entropyMin:
+          description: 'Minimal Entropy of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+        entropyMax:        
+          description: 'Maximal Entropy of acceleration since last reset'
+          $ref: '#/components/schemas/MinMaxValueSet'
+
+    FrequencyDomainVibrationValues:
+      type: object
+      required:
+        - frequencyStep
+      properties:
+        frequencyStep:
+          type: number
+          format: double
+        accSpectrum:
+          description: 'Spectral data of acceleration '
+          $ref: '#/components/schemas/FrequencyAmplitudeSet'
+        velSpectrum:
+          description: 'Spectral data of velocity'
+          $ref: '#/components/schemas/FrequencyAmplitudeSet'
+        dispSpectrum:
+          description: 'Spectral data of displacement'
+          $ref: '#/components/schemas/FrequencyAmplitudeSet'
+        phaseSpectrum:
+          description: 'Phases of spectral data'
+          $ref: '#/components/schemas/FrequencyPhaseSet'
+        accPeaks:
+          description: 'Peaks in spectral data of acceleration'
+          $ref: '#/components/schemas/FrequencySpectrumPeaks'
+        velPeaks:
+          description: 'Peaks in spectral data for velocity'
+          $ref: '#/components/schemas/FrequencySpectrumPeaks'
+        dispPeaks:
+          description: 'Peaks in spectral data for displacement'
+          $ref: '#/components/schemas/FrequencySpectrumPeaks'
+        
+    MeasValue:
+      type: number
+      format: double
+
+    ThreeDValue:
+      type: object
+      required:
+        - xVal
+      properties:
+        x:
+          $ref: "#/components/schemas/MeasValue"
+        y:
+          $ref: "#/components/schemas/MeasValue"
+        z:
+          $ref: "#/components/schemas/MeasValue"
+
+    MinMaxValueSet:
+      type: object
+      required:
+        - x
+      properties:
+        x:
+          $ref: "#/components/schemas/MinMaxValue"
+        y:
+          $ref: "#/components/schemas/MinMaxValue"
+        z:
+          $ref: "#/components/schemas/MinMaxValue"
+        sum:
+          $ref: "#/components/schemas/MinMaxValue"
+
+    MinMaxValue:
+      type: object
+      properties:
+        timestamp:
+          $ref: "#/components/schemas/Timestamp"
+        value:
+          $ref: "#/components/schemas/MeasValue"
+
+    FrequencyAmplitudeSet:
+      type: object
+      required:
+        - xAmpl
+      properties:
+        xAmpl:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        yAmpl:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        zAmpl:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+    
+    FrequencyPhaseSet:
+      type: object
+      required:
+        - xPhase
+      properties:
+        xPhase:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        yPhase:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        zPhase:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+    
+    FrequencySpectrumPeaks:
+      type: object
+      required:
+        - xFrequency
+        - xAmpl
+      properties:
+        xFreq:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        xAmpl:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        yFreq:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        yAmpl:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        zFreq:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+        zAmpl:
+          type: array
+          items:
+            $ref: "#/components/schemas/MeasValue"
+
